@@ -4,6 +4,7 @@
 #include <time.h>
 #define MAX_PLAY 6
 
+//Struct for Players
 struct Players
 {
 	char Name[MAX_PLAY][10];
@@ -22,6 +23,7 @@ int main(void)
 	int size;
 	srand(time(NULL));
 
+	//Asks for Input
 	printf("Please enter the number of players (Max 6): ");
 	scanf("%d", &size);
 	printf("Each player next must choose an archtype.\n");
@@ -47,6 +49,7 @@ int main(void)
 	// Sets Capabilities of each archtype
 	for(i=0;i<size;i++)
 	{
+		//Elf
 		if(strcmp(x[i].Archtype[i], ArchtypeList[0]) == 0)
 		{
 			x[i].Smarts[i] = 70 + rand()%31;
@@ -55,6 +58,7 @@ int main(void)
 			x[i].Luck[i] = 60 + rand()%41;
 			x[i].Dex[i] = 1 + rand()%100;
 		}
+		//Human
 		else if(strcmp(x[i].Archtype[i], ArchtypeList[1]) == 0)
 		{
 			int total;
@@ -69,6 +73,7 @@ int main(void)
 				total = x[i].Smarts[i] + x[i].Strength[i] + x[i].Magic[i] + x[i].Luck[i] + x[i].Dex[i];
 			}
 		}
+		//Ogre
 		else if(strcmp(x[i].Archtype[i], ArchtypeList[2]) == 0)
 		{
 			int sum;
@@ -83,6 +88,7 @@ int main(void)
 				sum = x[i].Smarts[i] + x[i].Luck[i];
 			}
 		}
+		//Wizard
 		else if(strcmp(x[i].Archtype[i], ArchtypeList[3]) == 0)
 		{
 			x[i].Smarts[i] = 90 + rand()%11;
@@ -91,9 +97,13 @@ int main(void)
 			x[i].Luck[i] = 50 + rand()%51;
 			x[i].Dex[i] = 1 + rand()%100;
 		}
+		else
+		{
+			printf("Player %d didn't enter a valid archtype. Please restart the program again.\n", i);
+		}
 	}
 
-	//------------------------------------------------------------
+	//This is the second part of the Assignment, Player choice
 
 	for(i=0;i<size;i++)
 	{
@@ -103,10 +113,12 @@ int main(void)
 		printf("Would you like to move(M) or attack(A) the closest player?\n");
 		scanf(" %c", &ans);
 
+		//Move
 		if(ans == 'M')
 		{
 
 		}
+		//Attack
 		else if(ans == 'A')
 		{
 			int defend, attack;
@@ -129,6 +141,7 @@ int main(void)
 		}
 	}
 
+	//Prints totals
 	printf("\n");
 	for(i=0;i<size;i++)
 	{
