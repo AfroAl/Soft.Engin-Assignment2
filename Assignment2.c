@@ -26,19 +26,20 @@ struct slot slotlist[20];
 
 int main()
 {
+    int Slotsize, PlayPlaysize;
+    int i;
+
     printf("Please enter the number of players (Max 6): ");
-    scanf("%d", &size);
+    scanf("%d", &Playsize);
     printf("Each player next must choose an archtype.\n");
     printf("Elfs, Human, Ogre, Wizard\n");
     printf("Please enter your archtype as it is written above.\n");
 
-    struct Players x[size];
+    struct Players x[Playsize];
     char ArchtypeList[4][7] = {"Elf", "Human", "Ogre", "Wizard"};
 
     printf("Enter the number of slots needed in the array: ");
-    int Slotsize, Playsize;
-    int i;
-    scanf("%d", &size);
+    scanf("%d", &Playsize);
    
     struct slot terrain[Slotsize]; 
     struct slot y;
@@ -64,20 +65,20 @@ int main()
     }
 
     // Asks for Name & Archtype
-    while(i<size)
+    while(i<Playsize)
     {
         scanf("%s %s", &(x[i].Name[i]) , &(x[i].Archtype[i]));
         i++;
     }
 
     // Sets all lifepoints to 100
-    for(i=0;i<size;i++)
+    for(i=0;i<Playsize;i++)
     {
         x[i].lifePoints[i] = 100;
     }
 
     // Sets Capabilities of each archtype
-    for(i=0;i<size;i++)
+    for(i=0;i<Playsize;i++)
     {
         if(strcmp(x[i].Archtype[i], ArchtypeList[0]) == 0)
         {
@@ -129,7 +130,7 @@ int main()
         
     //------------------------------------------------------------
 
-    for(i=0;i<size;i++)
+    for(i=0;i<Playsize;i++)
     {
         char ans;
         printf("\n");
@@ -164,7 +165,7 @@ int main()
     }
 
     printf("\n");
-    for(i=0;i<size;i++)
+    for(i=0;i<Playsize;i++)
     {
         printf("%s (%s, %d)\n", x[i].Name[i], x[i].Archtype[i], x[i].lifePoints[i]);
     }
