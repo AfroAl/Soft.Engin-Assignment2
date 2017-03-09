@@ -29,6 +29,7 @@ int main()
     int Slotsize, Playsize;
     int i;
 
+    //Asks for input of Player & Archtype
     printf("Please enter the number of players (Max 6): ");
     scanf("%d", &Playsize);
     printf("Each player next must choose an archtype.\n");
@@ -44,6 +45,7 @@ int main()
         i++;
     }
 
+    //Asks for input of Slots
     printf("Enter the number of slots needed in the array: ");
     scanf("%d", &Slotsize);
    
@@ -51,6 +53,13 @@ int main()
     struct slot y;
     srand(time(NULL));
 
+    //Sets each slot to hold a 0
+    for(i=0;i<Slotsize;i++)
+    {
+        terrain[i].playerslot[i] = 0;
+    }
+
+    //Gives each slot a random terrain type
     for( i = 0; i < Slotsize; i++)
     {
 	  terrain[i].stpoint[i]=rand() % 3 + 1;
@@ -163,6 +172,7 @@ int main()
         }
     }
 
+    //Prints out Player stats
     printf("\n");
     for(i=0;i<Playsize;i++)
     {
