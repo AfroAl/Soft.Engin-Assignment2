@@ -1,1 +1,4 @@
 'Published by Andrew Lambert and Dongyrul Jeong' 
+
+The commits were all done by me (Andrew Lambert) as my partner (Dongyrul Jeong) wasn't
+able to use GitShell on his laptop. 
