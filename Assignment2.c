@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #define MAX_PLAY 6
+#define MAX_SLOT 20
 
 struct Players
 {
@@ -18,16 +19,15 @@ struct Players
 
 struct slot
 {
-	int stpoint[20];
-	time_t t;
+	int stpoint[MAX_SLOT];
+    int playerslot[MAX_SLOT];
 };
-
-struct slot slotlist[20];
 
 int main()
 {
     int Slotsize, Playsize;
-    int i;
+    int i=0;
+    int j;
 
     //Asks for input of Player & Archtype
     printf("Please enter the number of players (Max 6): ");
@@ -59,11 +59,27 @@ int main()
         terrain[i].playerslot[i] = 0;
     }
 
+    i=1;
+    while(i<=Playsize)
+    {
+        j = rand()%Slotsize;
+        if(terrain[j].playerslot[j] == 0)
+        {
+            terrain[j].playerslot[j] = i;
+            i++;
+        }
+    }
+
+    for(i=0;i<Slotsize;i++)
+    {
+        printf("%d ", terrain[i].playerslot[i]);
+    }
+
     //Gives each slot a random terrain type
     for( i = 0; i < Slotsize; i++)
     {
 	  terrain[i].stpoint[i]=rand() % 3 + 1;
-	  if(terrain[i].stpoint[i] == 1)
+	 /* if(terrain[i].stpoint[i] == 1)
  	{
  	printf("This slot is level ground terrain.\n");
  	}
@@ -76,7 +92,7 @@ int main()
  	else if(terrain[i].stpoint[i] == 3)
  	{
  	printf("This slot is city terrain.\n");
- 	}  
+ 	} */ 
     }
 
     // Sets all lifepoints to 100
@@ -94,12 +110,12 @@ int main()
             x[i].Strength[i] = 1 + rand()%50;
             x[i].Magic[i] = 51 + rand()%30;
             x[i].Luck[i] = 60 + rand()%41;
-            x[i].Dex[i] = 1 + rand()%100;
+            x[i].Dex[i] = 1 + rand()%100;       
         }
         else if(strcmp(x[i].Archtype[i], ArchtypeList[1]) == 0)
         {
-            int total;
-            while(total>300)
+            int total=0;
+            while(total<300)
             {
                 x[i].Smarts[i] = 1 + rand()%100;
                 x[i].Strength[i] = 1 + rand()%100;
@@ -108,11 +124,11 @@ int main()
                 x[i].Dex[i] = 1 + rand()%100;
 
                 total = x[i].Smarts[i] + x[i].Strength[i] + x[i].Magic[i] + x[i].Luck[i] + x[i].Dex[i];
-            }
+            } 
         }
         else if(strcmp(x[i].Archtype[i], ArchtypeList[2]) == 0)
         {
-            int sum;
+            int sum=0;
             while(sum<=50)
             {
                 x[i].Smarts[i] = rand()%21;
@@ -149,26 +165,253 @@ int main()
         if(ans == 'M')
         {
 
+            int currPos;
+            for(j=0;j<Slotsize;j++)
+            {
+                if(terrain[i].playerslot[j] == i)
+                {
+                    currPos = j;
+                }
+            }
+
+            int i, j, m, tmp, Nxt, a=j;
+            if(terrain[i].stpoint[i] == 1)
+            {
+                printf("Current position: level ground.\n");
+            }
+ 
+            else if(terrain[i].stpoint[i] == 2)
+            {
+                printf("Current position: hill.\n");
+            }
+ 
+            else if(terrain[i].stpoint[i] == 3)
+            {
+                printf("Current position: city.\n");
+            }
+
+            if(currPos==0)
+            {
+                printf("You can only move forward.\n");
+
+                if(terrain[j+1].playerslot[j+1] == 0)
+                {
+                    terrain[j].playerslot[j] = tmp;
+                    terrain[j].playerslot[j] = terrain[j+1].playerslot[j+1];
+                    terrain[j+1].playerslot[j+1] = tmp;
+                }
+                else{
+                    a++;
+                    j++;
+                }
+
+                Nxt = currPos + a;
+            }
+            else if(currPos == Slotsize-1)
+            {
+                printf("You can only move backward.\n");
+
+                if(terrain[j-1].playerslot[j-1] == 0)
+                {
+                    terrain[j].playerslot[j] = tmp;
+                    terrain[j].playerslot[j] = terrain[j-1].playerslot[j-1];
+                    terrain[j-1].playerslot[j-1] = tmp;
+                }
+                else{
+                    a--;
+                    j--;
+                }
+
+                Nxt = currPos - a;
+            }     
+        else   
+        {
+
+            puts("If you want to move forward, Enter '1'.\n");  
+            puts("If you want to move backward, Enter '2'.\n");
+            scanf("%d", &m);
+            if(m == 1)
+            {
+                if(terrain[j+1].playerslot[j+1] == 0)
+                {
+                    terrain[j].playerslot[j] = tmp;
+                    terrain[j].playerslot[j] = terrain[j+1].playerslot[j+1];
+                    terrain[j+1].playerslot[j+1] = tmp;
+                }
+                else{
+                a++;
+                j++;
+                }
+
+                Nxt = currPos + a;
+            }
+            if(m == 2)
+            {
+                if(terrain[j-1].playerslot[j-1] == 0)
+                {
+                    terrain[j].playerslot[j] = tmp;
+                    terrain[j].playerslot[j] = terrain[j-1].playerslot[j-1];
+                    terrain[j-1].playerslot[j-1] = tmp;
+                }
+                else{
+                a--;
+                j--;
+                }
+
+                Nxt = currPos - a;
+            }
+        } 
+        puts("Player moved.\n");        
+        if(terrain[Nxt].stpoint[Nxt] == 1)
+            {
+                printf("Current position: level ground. No status change at this terrain. \n");
+            }
+ 
+        else if(terrain[Nxt].stpoint[Nxt] == 2)
+            {
+                printf("Current position: hill. Now changing status....\n");
+                printf("If player's 'Dexterity < 50, loses 10 Strength points.\n");
+                printf("If Dexterity >= 60, then the player gains 10 Strength points.\n");
+                 if(x[Nxt].Dex[Nxt] < 50)
+                {
+                    x[Nxt].Strength[Nxt] -= 10;
+                }
+                else if(x[Nxt].Dex[Nxt] >= 60)
+                {
+                    x[Nxt].Strength[Nxt] +=10;
+                }
+            }
+ 
+        else if(terrain[Nxt].stpoint[Nxt] == 3)
+            {
+                printf("Current position: city. Now changing status....\n");
+                printf("If Smartness > 60, then the player gains 10 Magic Skills points. \n");
+                printf("If Smartness <=50, then the player loses 10 Dexterity points. \n");
+                if(x[Nxt].Smarts[Nxt] > 60)
+                {
+                    x[Nxt].Magic[Nxt] += 10;
+                }
+                else if(x[Nxt].Smarts[Nxt] <= 60)
+                {
+                    x[Nxt].Dex[Nxt] -= 10;
+                }
+            }
+                        
         }
         else if(ans == 'A')
         {
-            int defend, attack;
-            if(x[defend].Strength[defend] <= 70)
+            int defend, defendL=20, defendR=40, attack;
+            for(j=0;j<Slotsize;j++)
+            {
+                if(terrain[j].playerslot[j] == i+1)
+                {
+                    attack = j;
+                    printf("%da\n", attack);
+                }
+            }
+
+            if(attack==0)
+            {
+                defendL=20;
+
+                for(j=attack;j<Slotsize;j++)
+                {
+                    if(terrain[j].playerslot[j] != 0)
+                    {
+                        defendR = j;
+                    }
+                }
+
+                defendR = defendR - attack;
+                printf("%ddR\n", defendR);
+            }
+            else if(attack==Slotsize-1)
+            {
+                defendR = 20;
+
+                for(j=attack;j>-1;j--)
+                {
+                    if(terrain[j].playerslot[j] != 0)
+                    {
+                        defendL = j;
+                    }
+                }
+
+                defendL = attack - (-defendL);
+                printf("%ddL\n", defendL);
+
+            }
+            else
+            {
+                for(j=attack;j<Slotsize;j++)
+                {
+                    if(terrain[j].playerslot[j] != 0)
+                    {
+                        defendR = j;
+                    }
+                }
+
+                defendR = defendR - attack;
+                printf("%ddR\n", defendR);
+
+                for(j=attack;j>-1;j--)
+                {
+                    if(terrain[j].playerslot[j] != 0)
+                    {
+                        defendL = j;
+                    }
+                }
+
+                defendL = attack - (-defendL);
+                printf("%ddL\n", defendL);
+            }
+            
+            
+            if(defendL == defendR)
+            {
+                printf("1\n");
+                int choice;
+                printf("There are two closest players.\n");
+                printf("Will you attack Player %d or Player %d?\n", terrain[defendL].playerslot[defendL], terrain[defendR].playerslot[defendR]);
+                printf("Please enter the player number: ");
+                scanf("%d", &choice);
+
+                if(choice == terrain[defendL].playerslot[defendL])
+                {
+                    defend = -(defendL);
+                }
+                else if(choice == terrain[defendR].playerslot[defendR])
+                {
+                    defend = defendR;
+                }
+            }
+            else if(defendL>defendR)
+            {
+                printf("2\n");
+                printf("You attack the closest player to your right: Player %d.\n", terrain[defendR+attack].playerslot[defendR+attack]);
+                defend = defendR;
+                printf("%d\n", defend);
+            }
+            else if(defendR>defendL)
+            {
+                printf("3\n");
+                printf("You attack the closest player to your left: Player %d.\n", terrain[attack-defendL].playerslot[attack-defendL]);
+                defend = -(defendL);
+                printf("%d\n", defend);
+            } 
+
+            if(x[attack+(defend)].Strength[attack+(defend)] <= 70)
             {
                 printf("Your opponent has less than or equal to 70 Strength points.\n");
                 printf("You overcame them and they took damage.\n");
-                x[defend].lifePoints[defend] -= 0.5*(x[defend].Strength[defend]);
+                x[attack+(defend)].lifePoints[attack+(defend)] -= 0.5*(x[attack+(defend)].Strength[attack+(defend)]);
             }
-            else if(x[defend].Strength[defend] > 70)
+            else if(x[attack].Strength[attack] > 70)
             {
                 printf("Your opponent has greater than 70 Strength points.\n");
                 printf("They fought back and you took damage.\n");
                 x[attack].lifePoints[attack] -= 0.3*(x[attack].Strength[attack]);
             }
-        }
-        else
-        {
-            printf("Please enter a valid choice.\n");
         }
     }
 
